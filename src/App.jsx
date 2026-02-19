@@ -84,7 +84,7 @@ function useTypingEffect(words, speed = 100) {
           }
         }
       },
-      deleting ? speed / 2 : speed
+      deleting ? speed / 2 : speed,
     );
     return () => clearTimeout(timeout);
   }, [charIndex, deleting, wordIndex, words, speed]);
@@ -188,8 +188,10 @@ function Section({ id, children, style }) {
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVis(true); },
-      { threshold: 0.1 }
+      ([e]) => {
+        if (e.isIntersecting) setVis(true);
+      },
+      { threshold: 0.1 },
     );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
@@ -218,8 +220,10 @@ function SkillBar({ name, level, color, delay }) {
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setTimeout(() => setAnimated(true), delay); },
-      { threshold: 0.3 }
+      ([e]) => {
+        if (e.isIntersecting) setTimeout(() => setAnimated(true), delay);
+      },
+      { threshold: 0.3 },
     );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
@@ -227,9 +231,25 @@ function SkillBar({ name, level, color, delay }) {
 
   return (
     <div ref={ref} style={{ marginBottom: "18px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-        <span style={{ color: "#e0e0e0", fontSize: "0.85rem", letterSpacing: "0.05em" }}>{name}</span>
-        <span style={{ color, fontSize: "0.8rem", fontWeight: 700 }}>{level}%</span>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "6px",
+        }}
+      >
+        <span
+          style={{
+            color: "#e0e0e0",
+            fontSize: "0.85rem",
+            letterSpacing: "0.05em",
+          }}
+        >
+          {name}
+        </span>
+        <span style={{ color, fontSize: "0.8rem", fontWeight: 700 }}>
+          {level}%
+        </span>
       </div>
       <div style={styles.skillTrack}>
         <div
@@ -238,7 +258,8 @@ function SkillBar({ name, level, color, delay }) {
             width: animated ? `${level}%` : "0%",
             background: `linear-gradient(90deg, ${color}88, ${color})`,
             boxShadow: animated ? `0 0 12px ${color}66` : "none",
-            transition: "width 1.2s cubic-bezier(0.4,0,0.2,1), box-shadow 1.2s ease",
+            transition:
+              "width 1.2s cubic-bezier(0.4,0,0.2,1), box-shadow 1.2s ease",
           }}
         />
       </div>
@@ -260,7 +281,10 @@ function ProjectCard({ project, index }) {
   return (
     <div
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => { setHovered(false); setTilt({ x: 0, y: 0 }); }}
+      onMouseLeave={() => {
+        setHovered(false);
+        setTilt({ x: 0, y: 0 });
+      }}
       onMouseMove={handleMouseMove}
       style={{
         ...styles.card,
@@ -275,30 +299,71 @@ function ProjectCard({ project, index }) {
         animationDelay: `${index * 0.1}s`,
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginBottom: "12px",
+        }}
+      >
         <span style={{ fontSize: "2rem" }}>{project.icon}</span>
-        <span style={{
-          fontSize: "0.65rem",
-          padding: "3px 10px",
-          borderRadius: "20px",
-          background: "rgba(0,255,200,0.1)",
-          color: "#00ffc8",
-          border: "1px solid rgba(0,255,200,0.3)",
-          letterSpacing: "0.1em",
-          fontWeight: 700,
-        }}>
+        <span
+          style={{
+            fontSize: "0.65rem",
+            padding: "3px 10px",
+            borderRadius: "20px",
+            background: "rgba(0,255,200,0.1)",
+            color: "#00ffc8",
+            border: "1px solid rgba(0,255,200,0.3)",
+            letterSpacing: "0.1em",
+            fontWeight: 700,
+          }}
+        >
           {project.tag}
         </span>
       </div>
-      <h3 style={{ color: "#fff", fontSize: "1.05rem", marginBottom: "8px", letterSpacing: "0.03em" }}>{project.title}</h3>
-      <p style={{ color: "#8899aa", fontSize: "0.82rem", lineHeight: 1.6, marginBottom: "16px" }}>{project.desc}</p>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "16px" }}>
+      <h3
+        style={{
+          color: "#fff",
+          fontSize: "1.05rem",
+          marginBottom: "8px",
+          letterSpacing: "0.03em",
+        }}
+      >
+        {project.title}
+      </h3>
+      <p
+        style={{
+          color: "#8899aa",
+          fontSize: "0.82rem",
+          lineHeight: 1.6,
+          marginBottom: "16px",
+        }}
+      >
+        {project.desc}
+      </p>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "6px",
+          marginBottom: "16px",
+        }}
+      >
         {project.tech.map((t) => (
-          <span key={t} style={styles.techBadge}>{t}</span>
+          <span key={t} style={styles.techBadge}>
+            {t}
+          </span>
         ))}
       </div>
       {project.link !== "#" && (
-        <a href={project.link} target="_blank" rel="noreferrer" style={styles.cardLink}>
+        <a
+          href={project.link}
+          target="_blank"
+          rel="noreferrer"
+          style={styles.cardLink}
+        >
           View Live →
         </a>
       )}
@@ -306,10 +371,27 @@ function ProjectCard({ project, index }) {
   );
 }
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+  return isMobile;
+}
+
 export default function App() {
   const [activeNav, setActiveNav] = useState("Home");
   const [menuOpen, setMenuOpen] = useState(false);
-  const typed = useTypingEffect(["Full Stack Developer", "Node.js Engineer", "React Specialist", "MCA Student", "Problem Solver"]);
+  const isMobile = useIsMobile();
+  const typed = useTypingEffect([
+    "Full Stack Developer",
+    "Node.js Engineer",
+    "React Specialist",
+    "MCA Student",
+    "Problem Solver",
+  ]);
 
   const scrollTo = (id) => {
     const el = document.getElementById(id.toLowerCase());
@@ -329,24 +411,58 @@ export default function App() {
         <div style={styles.navLogo} onClick={() => scrollTo("Home")}>
           <span style={styles.logoAccent}>K</span>B
         </div>
-        <div style={{ ...styles.navLinks, ...(menuOpen ? styles.navLinksOpen : {}) }}>
-          {NAV_LINKS.map((l) => (
-            <button
-              key={l}
-              onClick={() => scrollTo(l)}
-              style={{
-                ...styles.navBtn,
-                color: activeNav === l ? "#00ffc8" : "#aabbc8",
-                borderBottom: activeNav === l ? "2px solid #00ffc8" : "2px solid transparent",
-              }}
-            >
-              {l}
-            </button>
-          ))}
-        </div>
-        <button style={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? "✕" : "☰"}
-        </button>
+
+        {/* Desktop nav links */}
+        {!isMobile && (
+          <div style={styles.navLinks}>
+            {NAV_LINKS.map((l) => (
+              <button
+                key={l}
+                onClick={() => scrollTo(l)}
+                style={{
+                  ...styles.navBtn,
+                  color: activeNav === l ? "#00ffc8" : "#aabbc8",
+                  borderBottom:
+                    activeNav === l
+                      ? "2px solid #00ffc8"
+                      : "2px solid transparent",
+                }}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Hamburger — mobile only */}
+        {isMobile && (
+          <button
+            style={styles.hamburger}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? "✕" : "☰"}
+          </button>
+        )}
+
+        {/* Mobile dropdown */}
+        {isMobile && menuOpen && (
+          <div style={styles.mobileMenu}>
+            {NAV_LINKS.map((l) => (
+              <button
+                key={l}
+                onClick={() => scrollTo(l)}
+                style={{
+                  ...styles.mobileNavBtn,
+                  color: activeNav === l ? "#00ffc8" : "#c8d8e8",
+                  background:
+                    activeNav === l ? "rgba(0,255,200,0.06)" : "transparent",
+                }}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
+        )}
       </nav>
 
       {/* HERO */}
@@ -354,18 +470,42 @@ export default function App() {
         <div style={styles.heroGlow} />
         <div style={styles.heroContent}>
           <p style={styles.heroGreet}>Hello, World! 👋</p>
-          <h1 style={styles.heroName}>Khilesh<br /><span style={styles.heroNameAccent}>Bhangale</span></h1>
+          <h1 style={styles.heroName}>
+            Khilesh
+            <br />
+            <span style={styles.heroNameAccent}>Bhangale</span>
+          </h1>
           <div style={styles.heroTyped}>
             <span style={{ color: "#00ffc8" }}>{typed}</span>
             <span style={styles.blink}>|</span>
           </div>
           <p style={styles.heroSub}>
-            Full Stack Developer @ <a href="https://www.wintechbharat.com" target="_blank" rel="noreferrer" style={{ color: "#00ffc8", textDecoration: "none" }}>Wintech-Bharat Pvt Ltd</a>
-            <br />MCA · University of Mumbai &nbsp;|&nbsp; PG Diploma in Data Analytics & ML
+            Full Stack Developer @{" "}
+            <a
+              href="https://www.wintechbharat.com"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: "#00ffc8", textDecoration: "none" }}
+            >
+              Wintech-Bharat Pvt Ltd
+            </a>
+            <br />
+            MCA · University of Mumbai &nbsp;|&nbsp; PG Diploma in Data
+            Analytics & ML
           </p>
           <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-            <button onClick={() => scrollTo("Projects")} style={styles.ctaPrimary}>View Projects</button>
-            <button onClick={() => scrollTo("Contact")} style={styles.ctaSecondary}>Contact Me</button>
+            <button
+              onClick={() => scrollTo("Projects")}
+              style={styles.ctaPrimary}
+            >
+              View Projects
+            </button>
+            <button
+              onClick={() => scrollTo("Contact")}
+              style={styles.ctaSecondary}
+            >
+              Contact Me
+            </button>
           </div>
         </div>
         <div style={styles.heroVisual}>
@@ -374,10 +514,18 @@ export default function App() {
               <span style={{ fontSize: "3rem" }}>⚡</span>
             </div>
           </div>
-          <div style={styles.floatingBadge1} className="float1">Node.js</div>
-          <div style={styles.floatingBadge2} className="float2">React.js</div>
-          <div style={styles.floatingBadge3} className="float3">MySQL</div>
-          <div style={styles.floatingBadge4} className="float4">Express</div>
+          <div style={styles.floatingBadge1} className="float1">
+            Node.js
+          </div>
+          <div style={styles.floatingBadge2} className="float2">
+            React.js
+          </div>
+          <div style={styles.floatingBadge3} className="float3">
+            MySQL
+          </div>
+          <div style={styles.floatingBadge4} className="float4">
+            Express
+          </div>
         </div>
       </section>
 
@@ -397,10 +545,22 @@ export default function App() {
           </div>
           <div style={styles.aboutText}>
             <p style={styles.aboutPara}>
-              I'm <strong style={{ color: "#00ffc8" }}>Khilesh Bhangale</strong>, a passionate Full Stack Developer with hands-on experience building enterprise-grade web and mobile applications. Currently working at <strong style={{ color: "#00ffc8" }}>Wintech-Bharat Pvt Ltd</strong>, I architect and ship products that solve real business problems.
+              I'm <strong style={{ color: "#00ffc8" }}>Khilesh Bhangale</strong>
+              , a passionate Full Stack Developer with hands-on experience
+              building enterprise-grade web and mobile applications. Currently
+              working at{" "}
+              <strong style={{ color: "#00ffc8" }}>
+                Wintech-Bharat Pvt Ltd
+              </strong>
+              , I architect and ship products that solve real business problems.
             </p>
             <p style={styles.aboutPara}>
-              My stack centers around <strong style={{ color: "#61dafb" }}>Node.js</strong>, <strong style={{ color: "#61dafb" }}>React.js</strong>, <strong style={{ color: "#00758f" }}>MySQL</strong>, and <strong style={{ color: "#fff" }}>Express.js</strong>. I also explore React Native for mobile and data analytics with ML.
+              My stack centers around{" "}
+              <strong style={{ color: "#61dafb" }}>Node.js</strong>,{" "}
+              <strong style={{ color: "#61dafb" }}>React.js</strong>,{" "}
+              <strong style={{ color: "#00758f" }}>MySQL</strong>, and{" "}
+              <strong style={{ color: "#fff" }}>Express.js</strong>. I also
+              explore React Native for mobile and data analytics with ML.
             </p>
             <div style={styles.infoGrid}>
               {[
@@ -456,14 +616,53 @@ export default function App() {
         </div>
         <div style={styles.contactBox}>
           <div style={styles.contactGlow} />
-          <h3 style={{ color: "#fff", fontSize: "1.6rem", marginBottom: "12px" }}>Let's Build Something <span style={{ color: "#00ffc8" }}>Amazing</span></h3>
-          <p style={{ color: "#8899aa", marginBottom: "32px", maxWidth: "480px", margin: "0 auto 32px" }}>
-            Open to freelance projects, collaborations, or exciting job opportunities. Let's talk!
+          <h3
+            style={{ color: "#fff", fontSize: "1.6rem", marginBottom: "12px" }}
+          >
+            Let's Build Something{" "}
+            <span style={{ color: "#00ffc8" }}>Amazing</span>
+          </h3>
+          <p
+            style={{
+              color: "#8899aa",
+              marginBottom: "32px",
+              maxWidth: "480px",
+              margin: "0 auto 32px",
+            }}
+          >
+            Open to freelance projects, collaborations, or exciting job
+            opportunities. Let's talk!
           </p>
-          <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
-            <a href="mailto:khileshbhangale7297@gmail.com" style={styles.ctaPrimary}>📧 Send Email</a>
-            <a href="https://www.linkedin.com/in/khilesh-bhangale-b8b147190" target="_blank" rel="noreferrer" style={styles.ctaSecondary}>💼 LinkedIn</a>
-            <a href="https://github.com/khilesh07" target="_blank" rel="noreferrer" style={styles.ctaSecondary}>🐙 GitHub</a>
+          <div
+            style={{
+              display: "flex",
+              gap: "16px",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <a
+              href="mailto:khileshbhangale7297@gmail.com"
+              style={styles.ctaPrimary}
+            >
+              📧 Send Email
+            </a>
+            <a
+              href="https://www.linkedin.com/in/khilesh-bhangale-b8b147190"
+              target="_blank"
+              rel="noreferrer"
+              style={styles.ctaSecondary}
+            >
+              💼 LinkedIn
+            </a>
+            <a
+              href="https://github.com/khilesh07"
+              target="_blank"
+              rel="noreferrer"
+              style={styles.ctaSecondary}
+            >
+              🐙 GitHub
+            </a>
           </div>
         </div>
       </Section>
@@ -471,7 +670,9 @@ export default function App() {
       {/* FOOTER */}
       <footer style={styles.footer}>
         <p style={{ color: "#4a5a6a", fontSize: "0.8rem" }}>
-          Designed & Built by <span style={{ color: "#00ffc8" }}>Khilesh Bhangale</span> · {new Date().getFullYear()}
+          Designed & Built by{" "}
+          <span style={{ color: "#00ffc8" }}>Khilesh Bhangale</span> ·{" "}
+          {new Date().getFullYear()}
         </p>
       </footer>
     </div>
@@ -546,7 +747,6 @@ const styles = {
     display: "flex",
     gap: "8px",
   },
-  navLinksOpen: {},
   navBtn: {
     background: "none",
     border: "none",
@@ -559,12 +759,38 @@ const styles = {
     fontFamily: "inherit",
   },
   hamburger: {
-    display: "none",
     background: "none",
-    border: "none",
+    border: "1px solid rgba(0,255,200,0.3)",
     color: "#00ffc8",
-    fontSize: "1.3rem",
-    cursor: "none",
+    fontSize: "1.2rem",
+    cursor: "pointer",
+    padding: "6px 12px",
+    borderRadius: "6px",
+    lineHeight: 1,
+    fontFamily: "inherit",
+  },
+  mobileMenu: {
+    position: "fixed",
+    top: "64px",
+    left: 0,
+    right: 0,
+    background: "rgba(5,13,21,0.97)",
+    backdropFilter: "blur(20px)",
+    borderBottom: "1px solid rgba(0,255,200,0.12)",
+    display: "flex",
+    flexDirection: "column",
+    zIndex: 99,
+    padding: "8px 0 16px",
+  },
+  mobileNavBtn: {
+    border: "none",
+    padding: "14px 32px",
+    cursor: "pointer",
+    fontSize: "0.9rem",
+    letterSpacing: "0.1em",
+    textAlign: "left",
+    fontFamily: "inherit",
+    transition: "color 0.2s, background 0.2s",
   },
   hero: {
     position: "relative",
@@ -582,7 +808,8 @@ const styles = {
     left: "10%",
     width: "500px",
     height: "500px",
-    background: "radial-gradient(circle, rgba(0,255,200,0.06) 0%, transparent 70%)",
+    background:
+      "radial-gradient(circle, rgba(0,255,200,0.06) 0%, transparent 70%)",
     pointerEvents: "none",
   },
   heroContent: {
@@ -604,7 +831,10 @@ const styles = {
     margin: "0 0 16px",
     fontFamily: "'Fira Code', monospace",
   },
-  heroNameAccent: { color: "#00ffc8", textShadow: "0 0 30px rgba(0,255,200,0.4)" },
+  heroNameAccent: {
+    color: "#00ffc8",
+    textShadow: "0 0 30px rgba(0,255,200,0.4)",
+  },
   heroTyped: {
     fontSize: "1.2rem",
     marginBottom: "20px",
@@ -633,13 +863,15 @@ const styles = {
     width: "220px",
     height: "220px",
     borderRadius: "50%",
-    background: "linear-gradient(135deg, rgba(0,255,200,0.1), rgba(97,218,251,0.05))",
+    background:
+      "linear-gradient(135deg, rgba(0,255,200,0.1), rgba(97,218,251,0.05))",
     border: "1px solid rgba(0,255,200,0.2)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     animation: "rotate3d 8s linear infinite",
-    boxShadow: "0 0 60px rgba(0,255,200,0.1), inset 0 0 40px rgba(0,255,200,0.05)",
+    boxShadow:
+      "0 0 60px rgba(0,255,200,0.1), inset 0 0 40px rgba(0,255,200,0.05)",
   },
   orbInner: {
     width: "120px",
@@ -652,10 +884,30 @@ const styles = {
     justifyContent: "center",
     animation: "rotate3d 4s linear infinite reverse",
   },
-  floatingBadge1: { position: "absolute", top: "5%", right: "10%", ...badgeStyle("#68a063") },
-  floatingBadge2: { position: "absolute", top: "30%", right: "-5%", ...badgeStyle("#61dafb") },
-  floatingBadge3: { position: "absolute", bottom: "25%", right: "5%", ...badgeStyle("#00758f") },
-  floatingBadge4: { position: "absolute", bottom: "5%", right: "20%", ...badgeStyle("#ffffff") },
+  floatingBadge1: {
+    position: "absolute",
+    top: "5%",
+    right: "10%",
+    ...badgeStyle("#68a063"),
+  },
+  floatingBadge2: {
+    position: "absolute",
+    top: "30%",
+    right: "-5%",
+    ...badgeStyle("#61dafb"),
+  },
+  floatingBadge3: {
+    position: "absolute",
+    bottom: "25%",
+    right: "5%",
+    ...badgeStyle("#00758f"),
+  },
+  floatingBadge4: {
+    position: "absolute",
+    bottom: "5%",
+    right: "20%",
+    ...badgeStyle("#ffffff"),
+  },
   ctaPrimary: {
     padding: "12px 28px",
     background: "linear-gradient(135deg, #00ffc8, #00b894)",
@@ -743,7 +995,8 @@ const styles = {
     position: "absolute",
     inset: "-2px",
     borderRadius: "22px",
-    background: "linear-gradient(135deg, rgba(0,255,200,0.3), transparent, rgba(97,218,251,0.2))",
+    background:
+      "linear-gradient(135deg, rgba(0,255,200,0.3), transparent, rgba(97,218,251,0.2))",
     zIndex: -1,
     animation: "borderGlow 3s ease infinite alternate",
   },
@@ -839,7 +1092,8 @@ const styles = {
     transform: "translate(-50%, -50%)",
     width: "400px",
     height: "200px",
-    background: "radial-gradient(ellipse, rgba(0,255,200,0.06) 0%, transparent 70%)",
+    background:
+      "radial-gradient(ellipse, rgba(0,255,200,0.06) 0%, transparent 70%)",
     pointerEvents: "none",
   },
   footer: {
@@ -908,8 +1162,6 @@ const CSS = `
   .float4 { animation: float2 4.5s ease-in-out infinite 0.2s; }
 
   @media (max-width: 768px) {
-    nav { padding: 0 4%; }
-    .navLinks { display: none; }
-    button[style*="display: none"] { display: none; }
+    nav { padding: 0 4% !important; }
   }
 `;
