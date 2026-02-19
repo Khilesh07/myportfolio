@@ -462,8 +462,8 @@ export default function App() {
           </p>
           <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
             <a href="mailto:khileshbhangale7297@gmail.com" style={styles.ctaPrimary}>📧 Send Email</a>
-            <a href="https://linkedin.com/in/khileshbhangale" target="_blank" rel="noreferrer" style={styles.ctaSecondary}>💼 LinkedIn</a>
-            <a href="https://github.com/khileshbhangale" target="_blank" rel="noreferrer" style={styles.ctaSecondary}>🐙 GitHub</a>
+            <a href="https://www.linkedin.com/in/khilesh-bhangale-b8b147190" target="_blank" rel="noreferrer" style={styles.ctaSecondary}>💼 LinkedIn</a>
+            <a href="https://github.com/khilesh07" target="_blank" rel="noreferrer" style={styles.ctaSecondary}>🐙 GitHub</a>
           </div>
         </div>
       </Section>
